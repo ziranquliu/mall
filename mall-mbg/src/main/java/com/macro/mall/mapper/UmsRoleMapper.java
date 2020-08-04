@@ -1,5 +1,6 @@
 package com.macro.mall.mapper;
 
+import com.macro.mall.model.UmsMenu;
 import com.macro.mall.model.UmsRole;
 import com.macro.mall.model.UmsRoleExample;
 import java.util.List;
@@ -27,4 +28,9 @@ public interface UmsRoleMapper {
     int updateByPrimaryKeySelective(UmsRole record);
 
     int updateByPrimaryKey(UmsRole record);
+    
+    /**
+     * 根据后台用户ID获取菜单
+     */
+    List<UmsMenu> getMenuList(@Param("adminId") Long adminId);
 }

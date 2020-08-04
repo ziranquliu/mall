@@ -4,6 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.macro.mall.bo.AdminUserDetails;
+import com.macro.mall.config.DataSource;
+import com.macro.mall.config.DataSourceEnum;
 import com.macro.mall.dao.UmsAdminPermissionRelationDao;
 import com.macro.mall.dao.UmsAdminRoleRelationDao;
 import com.macro.mall.dto.UmsAdminParam;
@@ -66,9 +68,12 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     private UmsAdminCacheService adminCacheService;
 
     @Override
+    @DataSource(DataSourceEnum.DB1)
     public UmsAdmin getAdminByUsername(String username) {
         UmsAdmin admin = adminCacheService.getAdmin(username);
-        if(admin!=null) return  admin;
+        if(admin!=null) {
+            return  admin;
+        }
         UmsAdminExample example = new UmsAdminExample();
         example.createCriteria().andUsernameEqualTo(username);
         List<UmsAdmin> adminList = adminMapper.selectByExample(example);
@@ -101,6 +106,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
+    @DataSource(DataSourceEnum.DB1)
     public String login(String username, String password) {
         String token = null;
         //密码需要客户端加密后传递
@@ -124,9 +130,12 @@ public class UmsAdminServiceImpl implements UmsAdminService {
      * 添加登录记录
      * @param username 用户名
      */
+    @DataSource(DataSourceEnum.DB1)
     private void insertLoginLog(String username) {
         UmsAdmin admin = getAdminByUsername(username);
-        if(admin==null) return;
+        if(admin==null) {
+            return;
+        }
         UmsAdminLoginLog loginLog = new UmsAdminLoginLog();
         loginLog.setAdminId(admin.getId());
         loginLog.setCreateTime(new Date());
@@ -139,6 +148,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     /**
      * 根据用户名修改登录时间
      */
+    @DataSource(DataSourceEnum.DB1)
     private void updateLoginTimeByUsername(String username) {
         UmsAdmin record = new UmsAdmin();
         record.setLoginTime(new Date());
@@ -153,11 +163,13 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
+    @DataSource(DataSourceEnum.DB1)
     public UmsAdmin getItem(Long id) {
         return adminMapper.selectByPrimaryKey(id);
     }
 
     @Override
+    @DataSource(DataSourceEnum.DB1)
     public List<UmsAdmin> list(String keyword, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum, pageSize);
         UmsAdminExample example = new UmsAdminExample();
@@ -170,6 +182,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
+    @DataSource(DataSourceEnum.DB1)
     public int update(Long id, UmsAdmin admin) {
         admin.setId(id);
         UmsAdmin rawAdmin = adminMapper.selectByPrimaryKey(id);
@@ -190,6 +203,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
+    @DataSource(DataSourceEnum.DB1)
     public int delete(Long id) {
         adminCacheService.delAdmin(id);
         int count = adminMapper.deleteByPrimaryKey(id);
@@ -198,6 +212,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
+    @DataSource(DataSourceEnum.DB1)
     public int updateRole(Long adminId, List<Long> roleIds) {
         int count = roleIds == null ? 0 : roleIds.size();
         //先删除原来的关系
@@ -220,17 +235,19 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
+    @DataSource(DataSourceEnum.DB1)
     public List<UmsRole> getRoleList(Long adminId) {
-        return adminRoleRelationDao.getRoleList(adminId);
+        return adminRoleRelationMapper.getRoleList(adminId);
     }
 
     @Override
+    @DataSource(DataSourceEnum.DB1)
     public List<UmsResource> getResourceList(Long adminId) {
         List<UmsResource> resourceList = adminCacheService.getResourceList(adminId);
         if(CollUtil.isNotEmpty(resourceList)){
             return  resourceList;
         }
-        resourceList = adminRoleRelationDao.getResourceList(adminId);
+        resourceList = adminRoleRelationMapper.getResourceList(adminId);
         if(CollUtil.isNotEmpty(resourceList)){
             adminCacheService.setResourceList(adminId,resourceList);
         }
@@ -238,6 +255,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
+    @DataSource(DataSourceEnum.DB1)
     public int updatePermission(Long adminId, List<Long> permissionIds) {
         //删除原所有权限关系
         UmsAdminPermissionRelationExample relationExample = new UmsAdminPermissionRelationExample();
@@ -275,11 +293,13 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
+    @DataSource(DataSourceEnum.DB1)
     public List<UmsPermission> getPermissionList(Long adminId) {
         return adminRoleRelationDao.getPermissionList(adminId);
     }
 
     @Override
+    @DataSource(DataSourceEnum.DB1)
     public int updatePassword(UpdateAdminPasswordParam param) {
         if(StrUtil.isEmpty(param.getUsername())
                 ||StrUtil.isEmpty(param.getOldPassword())
