@@ -105,12 +105,12 @@ public class UmsRoleServiceImpl implements UmsRoleService {
 
     @Override
     public List<UmsMenu> listMenu(Long roleId) {
-        return roleDao.getMenuListByRoleId(roleId);
+        return roleMapper.getMenuListByRoleId(roleId);
     }
 
     @Override
     public List<UmsResource> listResource(Long roleId) {
-        return roleDao.getResourceListByRoleId(roleId);
+        return roleMapper.getResourceListByRoleId(roleId);
     }
 
     @Override
