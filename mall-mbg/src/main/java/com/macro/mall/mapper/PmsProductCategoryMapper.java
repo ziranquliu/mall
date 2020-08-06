@@ -1,5 +1,6 @@
 package com.macro.mall.mapper;
 
+import com.macro.mall.dto.PmsProductCategoryWithChildrenItem;
 import com.macro.mall.model.PmsProductCategory;
 import com.macro.mall.model.PmsProductCategoryExample;
 import java.util.List;
@@ -33,4 +34,9 @@ public interface PmsProductCategoryMapper {
     int updateByPrimaryKeyWithBLOBs(PmsProductCategory record);
 
     int updateByPrimaryKey(PmsProductCategory record);
+
+    /**
+     * 获取商品分类及其子分类
+     */
+    List<PmsProductCategoryWithChildrenItem> listWithChildren();
 }

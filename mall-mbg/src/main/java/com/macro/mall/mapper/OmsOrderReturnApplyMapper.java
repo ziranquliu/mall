@@ -1,5 +1,6 @@
 package com.macro.mall.mapper;
 
+import com.macro.mall.dto.BaseQueryParam;
 import com.macro.mall.model.OmsOrderReturnApply;
 import com.macro.mall.model.OmsOrderReturnApplyExample;
 import java.util.List;
@@ -27,4 +28,9 @@ public interface OmsOrderReturnApplyMapper {
     int updateByPrimaryKeySelective(OmsOrderReturnApply record);
 
     int updateByPrimaryKey(OmsOrderReturnApply record);
+
+    /**
+     * 查询申请列表
+     */
+    List<OmsOrderReturnApply> getList(@Param("queryParam") BaseQueryParam queryParam);
 }

@@ -131,7 +131,7 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
 
     @Override
     public List<PmsProductCategoryWithChildrenItem> listWithChildren() {
-        return productCategoryDao.listWithChildren();
+        return productCategoryMapper.listWithChildren();
     }
 
     /**

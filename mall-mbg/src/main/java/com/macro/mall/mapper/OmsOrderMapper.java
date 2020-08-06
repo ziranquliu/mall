@@ -1,5 +1,6 @@
 package com.macro.mall.mapper;
 
+import com.macro.mall.dto.BaseQueryParam;
 import com.macro.mall.model.OmsOrder;
 import com.macro.mall.model.OmsOrderExample;
 import java.util.List;
@@ -27,4 +28,9 @@ public interface OmsOrderMapper {
     int updateByPrimaryKeySelective(OmsOrder record);
 
     int updateByPrimaryKey(OmsOrder record);
+
+    /**
+     * 条件查询订单
+     */
+    List<OmsOrder> getList(@Param("queryParam") BaseQueryParam queryParam);
 }

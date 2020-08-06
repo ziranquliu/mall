@@ -10,7 +10,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class OmsReturnApplyQueryParam {
+public class OmsReturnApplyQueryParam extends BaseQueryParam {
     @ApiModelProperty("服务单号")
     private Long id;
     @ApiModelProperty(value = "收货人姓名/号码")

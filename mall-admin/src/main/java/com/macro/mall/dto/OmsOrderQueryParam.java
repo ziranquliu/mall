@@ -10,7 +10,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class OmsOrderQueryParam {
+public class OmsOrderQueryParam extends BaseQueryParam{
     @ApiModelProperty(value = "订单编号")
     private String orderSn;
     @ApiModelProperty(value = "收货人姓名/号码")
