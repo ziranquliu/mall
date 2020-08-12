@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.mall.mapper.DataApiMapper">
+  <resultMap id="BaseResultMap" type="com.macro.mall.model.DataApi">
+    <id column="Id" jdbcType="VARCHAR" property="id" />
+    <result column="InterfaceName" jdbcType="VARCHAR" property="interfaceName" />
+    <result column="InterfaceContent" jdbcType="VARCHAR" property="interfaceContent" />
+    <result column="ConnId" jdbcType="VARCHAR" property="connId" />
+    <result column="ConnName" jdbcType="VARCHAR" property="connName" />
+    <result column="CreatedOn" jdbcType="TIMESTAMP" property="createdOn" />
+    <result column="ModifiedOn" jdbcType="TIMESTAMP" property="modifiedOn" />
+    <result column="DateTimeStamp" jdbcType="TIMESTAMP" property="dateTimeStamp" />
+    <result column="Version" jdbcType="INTEGER" property="version" />
+    <result column="HttpMethod" jdbcType="INTEGER" property="httpMethod" />
+    <result column="IsEnabled" jdbcType="BOOLEAN" property="isEnabled" />
+  </resultMap>
+  <sql id="Base_Column_List">
+        i.[Id],[InterfaceName],[InterfaceContent],[ConnId],i.[CreatedOn],i.[ModifiedOn],i.[DateTimeStamp],i.[Version],[HttpMethod],i.[IsEnabled]
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT
+    <if test="distinct">
+      DISTINCT
+    </if>
+    <include refid="Base_Column_List" />
+        ,c.ConnName
+    FROM [dbo].[Interface] i
+    LEFT JOIN [dbo].[Connection] c on c.Id=i.ConnId
+    <if test="orderByClause != null">
+      ORDER BY ${orderByClause}
+    </if>
+  </select>
+</mapper>
