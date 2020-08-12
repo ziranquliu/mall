@@ -30,4 +30,16 @@ public class DataDbController {
         List<DataDb> dataList = dataDbService.list(pageSize, pageNum);
         return CommonResult.success(CommonPage.restPage(dataList));
     }
+
+    @ApiOperation("启用禁用")
+    @RequestMapping(value = "/updateEnabled/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult updateEnabled(@PathVariable String id, @RequestParam("enabled") Boolean enabled) {
+        int count = dataDbService.updateEnabled(id, enabled);
+        if (count > 0) {
+            return CommonResult.success(count);
+        } else {
+            return CommonResult.failed();
+        }
+    }
 }

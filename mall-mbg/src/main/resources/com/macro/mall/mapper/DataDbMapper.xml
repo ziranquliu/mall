@@ -32,4 +32,18 @@
       ORDER BY ${orderByClause}
     </if>
   </select>
+
+  <select id="selectOneByKey" resultMap="BaseResultMap">
+    SELECT TOP 1
+    <include refid="Base_Column_List" />
+    FROM [dbo].[Connection] i
+    WHERE [Id] = #{id,jdbcType=VARCHAR}
+  </select>
+  <update id="updateEnabled" parameterType="com.macro.mall.model.DataDb">
+    UPDATE [dbo].[Connection]
+    SET [IsEnabled] = #{isEnabled,jdbcType=BOOLEAN}
+        ,[ModifiedOn] = #{modifiedOn,jdbcType=TIMESTAMP}
+        ,[Version] = #{version,jdbcType=INTEGER}
+    WHERE [Id] = #{id,jdbcType=VARCHAR}
+  </update>
 </mapper>

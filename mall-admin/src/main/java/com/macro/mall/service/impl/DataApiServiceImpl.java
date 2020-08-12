@@ -1,5 +1,6 @@
 package com.macro.mall.service.impl;
 
+import cn.hutool.core.date.DateTime;
 import com.github.pagehelper.PageHelper;
 import com.macro.mall.config.DataSource;
 import com.macro.mall.config.DataSourceEnum;
@@ -24,5 +25,20 @@ public class DataApiServiceImpl implements DataApiService {
     public List<DataApi> list(Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum, pageSize);
         return dataApiMapper.selectAll();
+    }
+
+    @Override
+    @DataSource(DataSourceEnum.DB2)
+    public int updateEnabled(String id, Boolean enabled) {
+        DataApi dataApi= dataApiMapper.selectOneByKey(id);
+        if(dataApi!=null) {
+            dataApi.setIsEnabled(enabled);
+            dataApi.setModifiedOn(DateTime.now());
+            dataApi.setVersion(dataApi.getVersion()+1);
+            return dataApiMapper.updateEnabled(dataApi);
+        }
+        else{
+            return 0;
+        }
     }
 }

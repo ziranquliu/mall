@@ -11,4 +11,6 @@ public interface DataDbService {
      * 分页查询后台数据库
      */
     List<DataDb> list(Integer pageSize, Integer pageNum);
+
+    int updateEnabled(String id, Boolean enabled);
 }
