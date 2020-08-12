@@ -225,10 +225,9 @@ public class EsProductServiceImpl implements EsProductService {
                                         .field("attrValueList.name"))));
         builder.addAggregation(aggregationBuilder);
         NativeSearchQuery searchQuery = builder.build();
-        return elasticsearchTemplate.query(searchQuery, response -> {
-            LOGGER.info("DSL:{}",searchQuery.getQuery().toString());
-            return convertProductRelatedInfo(response);
-        });
+        LOGGER.info("DSL:{}",searchQuery.getQuery().toString());
+        SearchResponse responseObj= (SearchResponse) elasticsearchTemplate.search(searchQuery, SearchResponse.class);
+        return convertProductRelatedInfo(responseObj);
     }
 
     /**
