@@ -14,6 +14,9 @@ spring:
         login-password: druid
   data:
     elasticsearch:
+#      cluster-name: my-application
+      #节点的地址，注意api模式下端口号是9300，千万不要写成9200
+      #是否开启本地存储
       repositories:
         enabled: true
-      cluster-nodes: 127.0.0.1:9300
+#      cluster-nodes: 127.0.0.1:9300

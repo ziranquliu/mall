@@ -1,16 +1,15 @@
 package com.macro.mall.service;
 
-import com.macro.mall.model.DataDb;
-import com.macro.mall.model.UmsMenu;
+import com.macro.mall.model.DataApi;
 
 import java.util.List;
 
-public interface DataDbService {
+public interface DataApiService {
 
     /**
      * 分页查询后台数据库
      */
-    List<DataDb> list(Integer pageSize, Integer pageNum);
+    List<DataApi> list(Integer pageSize, Integer pageNum);
 
     int updateEnabled(String id, Boolean enabled);
 }

@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.macro.mall.mapper.DataDbMapper">
-  <resultMap id="BaseResultMap" type="com.macro.mall.model.DataDb">
+<mapper namespace="com.macro.mall.mapper.DataApiMapper">
+  <resultMap id="BaseResultMap" type="com.macro.mall.model.DataApi">
     <id column="Id" jdbcType="VARCHAR" property="id" />
+    <result column="InterfaceName" jdbcType="VARCHAR" property="interfaceName" />
+    <result column="InterfaceContent" jdbcType="VARCHAR" property="interfaceContent" />
+    <result column="ConnId" jdbcType="VARCHAR" property="connId" />
     <result column="ConnName" jdbcType="VARCHAR" property="connName" />
-    <result column="ConnStr" jdbcType="VARCHAR" property="connStr" />
-    <result column="IsEnabled" jdbcType="BOOLEAN" property="isEnabled" />
-    <result column="QueryType" jdbcType="VARCHAR" property="queryType" />
     <result column="CreatedOn" jdbcType="TIMESTAMP" property="createdOn" />
     <result column="ModifiedOn" jdbcType="TIMESTAMP" property="modifiedOn" />
     <result column="DateTimeStamp" jdbcType="TIMESTAMP" property="dateTimeStamp" />
     <result column="Version" jdbcType="INTEGER" property="version" />
-    <result column="ApiNumbers" jdbcType="INTEGER" property="apiNumbers" />
+    <result column="HttpMethod" jdbcType="INTEGER" property="httpMethod" />
+    <result column="IsEnabled" jdbcType="BOOLEAN" property="isEnabled" />
   </resultMap>
   <sql id="Base_Column_List">
-        [Id],[ConnName],[ConnStr],[IsEnabled],[QueryType],[CreatedOn],[ModifiedOn],[DateTimeStamp],[Version]
+        i.[Id],[InterfaceName],[InterfaceContent],[ConnId],i.[CreatedOn],i.[ModifiedOn],i.[DateTimeStamp],i.[Version],[HttpMethod],i.[IsEnabled]
   </sql>
   <select id="selectAll" resultMap="BaseResultMap">
     SELECT
@@ -22,25 +23,21 @@
       DISTINCT
     </if>
     <include refid="Base_Column_List" />
-        ,a.ApiNumbers
-    FROM [dbo].[Connection] c
-    outer apply(
-      select COUNT(*) ApiNumbers FROM [dbo].[Interface]
-      where ConnId=c.Id
-    )a
+        ,c.ConnName
+    FROM [dbo].[Interface] i
+    LEFT JOIN [dbo].[Connection] c on c.Id=i.ConnId
     <if test="orderByClause != null">
       ORDER BY ${orderByClause}
     </if>
   </select>
-
   <select id="selectOneByKey" resultMap="BaseResultMap">
     SELECT TOP 1
     <include refid="Base_Column_List" />
-    FROM [dbo].[Connection] i
+    FROM [dbo].[Interface] i
     WHERE [Id] = #{id,jdbcType=VARCHAR}
   </select>
-  <update id="updateEnabled" parameterType="com.macro.mall.model.DataDb">
-    UPDATE [dbo].[Connection]
+  <update id="updateEnabled" parameterType="com.macro.mall.model.DataApi">
+    UPDATE [dbo].[Interface]
     SET [IsEnabled] = #{isEnabled,jdbcType=BOOLEAN}
         ,[ModifiedOn] = #{modifiedOn,jdbcType=TIMESTAMP}
         ,[Version] = #{version,jdbcType=INTEGER}
